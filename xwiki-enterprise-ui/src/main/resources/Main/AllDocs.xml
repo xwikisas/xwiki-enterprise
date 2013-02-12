@@ -11,15 +11,15 @@
 <customClass></customClass>
 <contentAuthor>XWiki.Admin</contentAuthor>
 <creationDate>1252447200000</creationDate>
-<date>1320310690000</date>
-<contentUpdateDate>1320310690000</contentUpdateDate>
-<version>1.1</version>
+<date>1360694947000</date>
+<contentUpdateDate>1360694947000</contentUpdateDate>
+<version>2.2</version>
 <title>$msg.get("xe.index.documents")</title>
 <template></template>
 <defaultTemplate></defaultTemplate>
 <validationScript></validationScript>
 <comment></comment>
-<minorEdit>false</minorEdit>
+<minorEdit>true</minorEdit>
 <syntaxId>xwiki/2.0</syntaxId>
 <hidden>false</hidden>
 <content>{{velocity}}
@@ -35,14 +35,18 @@
 ##========
 ## Set Tab Data
 ##========
-#set ($tabs = [
-  {'tabName' : 'index', 'idSuffix' : 'index', 'translationKey' : 'xe.index', 'document' : 'XWiki.Tableview'},
-  {'tabName' : 'tree', 'idSuffix' : 'treeview', 'translationKey' : 'xe.index.tree', 'document' : 'XWiki.Treeview'},
-  {'tabName' : 'orphans', 'idSuffix' : 'orphansview', 'translationKey' : 'xe.index.orphaned', 'document' : 'XWiki.OrphanedPages'},
-  {'tabName' : 'attachments', 'idSuffix' : 'attachments', 'translationKey' : 'xe.index.attachments', 'document' : 'XWiki.AllAttachments'},
-  {'tabName' : 'deletedDocs', 'idSuffix' : 'deletedDocs', 'translationKey' : 'xe.index.documentsTrash', 'document' : 'XWiki.DeletedDocuments'},
-  {'tabName' : 'deletedAttachments', 'idSuffix' : 'deletedAttachments', 'translationKey' : 'xe.index.attachmentsTrash', 'document' : 'XWiki.DeletedAttachments'}
-])
+#set($tabs = [])
+#macro(addAllDocsTab $tab)
+ #if($xwiki.hasAccessLevel('view', "$!context.user", $tab.get('document')))
+  #set($discard = $tabs.add($tab))
+ #end
+#end
+#addAllDocsTab({'tabName' : 'index', 'idSuffix' : 'index', 'translationKey' : 'xe.index', 'document' : 'XWiki.Tableview'})
+#addAllDocsTab({'tabName' : 'tree', 'idSuffix' : 'treeview', 'translationKey' : 'xe.index.tree', 'document' : 'XWiki.Treeview'})
+#addAllDocsTab({'tabName' : 'orphans', 'idSuffix' : 'orphansview', 'translationKey' : 'xe.index.orphaned', 'document' : 'XWiki.OrphanedPages'})
+#addAllDocsTab({'tabName' : 'attachments', 'idSuffix' : 'attachments', 'translationKey' : 'xe.index.attachments', 'document' : 'XWiki.AllAttachments'})
+#addAllDocsTab({'tabName' : 'deletedDocs', 'idSuffix' : 'deletedDocs', 'translationKey' : 'xe.index.documentsTrash', 'document' : 'XWiki.DeletedDocuments'})
+#addAllDocsTab({'tabName' : 'deletedAttachments', 'idSuffix' : 'deletedAttachments', 'translationKey' : 'xe.index.attachmentsTrash', 'document' : 'XWiki.DeletedAttachments'})
 ##=============================================
 ## Add External Links tab if the LinkChecker module is present.
 ## TODO: In the future replace this hardcoded link with Interface Extensions
