@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <xwikidoc>
 <web>Main</web>
 <name>AllDocs</name>
@@ -11,16 +10,16 @@
 <author>XWiki.Admin</author>
 <customClass></customClass>
 <contentAuthor>XWiki.Admin</contentAuthor>
-<creationDate>1252454400000</creationDate>
-<date>1252454400000</date>
-<contentUpdateDate>1252454400000</contentUpdateDate>
-<version>1.1</version>
+<creationDate>1252447200000</creationDate>
+<date>1360854101000</date>
+<contentUpdateDate>1360854101000</contentUpdateDate>
+<version>1.2</version>
 <title>$msg.get("xe.index.documents")</title>
 <template></template>
 <defaultTemplate></defaultTemplate>
 <validationScript></validationScript>
 <comment></comment>
-<minorEdit>false</minorEdit>
+<minorEdit>true</minorEdit>
 <syntaxId>xwiki/2.0</syntaxId>
 <hidden>false</hidden>
 <content>{{velocity}}
@@ -40,8 +39,12 @@
 #indexTab('tree',        'treeview',    '.tree')
 #indexTab('orphans',     'orphansview', '.orphaned')
 #indexTab('attachments', 'attachments', '.attachments')
-#indexTab('deletedDocs', 'deletedDocs', '.documentsTrash')
-#indexTab('deletedAttachments', 'deletedAttachments', '.attachmentsTrash')
+#if($xwiki.hasAccessLevel('view', "$!context.user", "XWiki.DeletedDocuments"))
+ #indexTab('deletedDocs', 'deletedDocs', '.documentsTrash')
+#end
+#if($xwiki.hasAccessLevel('view', "$!context.user", "XWiki.DeletedAttachments"))
+ #indexTab('deletedAttachments', 'deletedAttachments', '.attachmentsTrash')
+#end
 &lt;/ul&gt;
 &lt;/div&gt;
 &lt;div class="xwikitabpanescontainer"&gt;
@@ -67,12 +70,12 @@
 ## If view=orphans then display orphans
 ## ==============================================
 {{include document="XWiki.OrphanedPages" /}}
-#elseif ($view == 'deletedDocs')
+#elseif ($view == 'deletedDocs' &amp;&amp; $xwiki.hasAccessLevel('view', "$!context.user", "XWiki.DeletedDocuments"))
 ## ==============================================
 ## If view=deletedDocs then display the recycle bin
 ## ==============================================
 {{include document="XWiki.DeletedDocuments" /}}
-#elseif ($view == 'deletedAttachments')
+#elseif ($view == 'deletedAttachments' &amp;&amp; $xwiki.hasAccessLevel('view', "$!context.user", "XWiki.DeletedAttachments"))
 ## ==============================================
 ## If view=deletedAttachments then display the attachment trash
 ## ==============================================
@@ -82,5 +85,4 @@
 {{html}}
 &lt;/div&gt;
 {{/html}}
-{{/velocity}}</content>
-</xwikidoc>
+{{/velocity}}</content></xwikidoc>
